@@ -1,23 +1,23 @@
 /**
-*  fn_spend
+*  fn_add
 *
-*  Subtract from specified players score if the player has the score
+* Subtracts points from the specified player. Server authoritative
+* to allow for shared points.
 *
-*  Domain: Server
+*  Domain: Any
 **/
+#include "..\..\shared\bulwark.hpp"
+
+params ["_player", "_points"];
 
 if (isServer) then {
-	_player = _this select 0;
-	_points = _this select 1;
-
-	_killPoints = _player getVariable "killPoints";
-	if(isNil "_killPoints") then {
-		_killPoints = 0;
-	};
-
+	private _killPoints = [_player] call killPoints_fnc_get;
 	if(_killPoints - _points >= 0) then {
-	    _killPoints = _killPoints - _points;
-	    _player setVariable ["killPoints", _killPoints, true];
-	    [] remoteExec ["killPoints_fnc_updateHud", _player];
+		_killPoints = _killPoints - _points;
 	};
-};
+
+	// Perform the actual change on the server
+	[_player, _killPoints] call killPoints_fnc_change;
+} else {
+	[_player, _points] call killPoints_fnc_spend;
+}

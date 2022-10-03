@@ -10,7 +10,7 @@
 playersInWave = [];
 publicVariable "playersInWave";
 
-bulwarkBox setVariable ["buildPhase", true, true];
+missionNamespace setVariable ["buildPhase", true, true];
 
 ["TaskSucceeded",["Complete","Wave " + str attkWave + " complete!"]] remoteExec ["BIS_fnc_showNotification", 0];
 RESPAWN_TIME = 0;
@@ -28,6 +28,8 @@ publicVariable "RESPAWN_TIME";
 	// Revive players that are INCAPACITATED.
 	if (lifeState _x == "INCAPACITATED") then {
 		["#rev", 1, _x] remoteExecCall ["BIS_fnc_reviveOnState",_x];
+		[_x] remoteExecCall  ["ace_medical_treatment_fnc_fullHealLocal"];
+		[_x] remoteExec ["removeAllActions"];
 	};
 } foreach allPlayers;
 
@@ -41,4 +43,13 @@ publicVariable "RESPAWN_TIME";
 MIND_CONTROLLED_AI = [];
 publicVariable "MIND_CONTROLLED_AI";
 
-sleep _downTime;
+{
+	[_x] remoteExecCall  ["ace_medical_treatment_fnc_fullHealLocal"];
+	[_x] remoteExec ["removeAllActions"]; //heal all player at the end of the round
+} foreach allPlayers;
+
+
+// Pre-initialize loot for the next wave
+call loot_fnc_startPreSpawn;
+
+sleep DOWN_TIME;

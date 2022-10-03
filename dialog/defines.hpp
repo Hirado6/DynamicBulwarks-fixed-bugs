@@ -1,3 +1,6 @@
+// NOTE: Base class values for controls can usually be found in the
+// config viewer under ctrlXXX, such as ctrlButton.
+
 ///////////////////////////////////////////////////////////////////////////
 /// Styles
 ///////////////////////////////////////////////////////////////////////////
@@ -20,12 +23,14 @@
 #define CT_CONTEXT_MENU     14
 #define CT_CONTROLS_GROUP   15
 #define CT_SHORTCUTBUTTON   16
+#define CT_CONTROLS_TABLE   19
 #define CT_XKEYDESC         40
 #define CT_XBUTTON          41
 #define CT_XLISTBOX         42
 #define CT_XSLIDER          43
 #define CT_XCOMBO           44
 #define CT_ANIMATED_TEXTURE 45
+#define CT_CHECKBOX         77
 #define CT_OBJECT           80
 #define CT_OBJECT_ZOOM      81
 #define CT_OBJECT_CONTAINER 82
@@ -288,7 +293,7 @@ class RscCombo
 		1
 	};
 	maxHistoryDelay = 1;
-	class ScrollBar
+	class ComboScrollBar
 	{
 		color[] =
 		{
@@ -542,30 +547,10 @@ class RscButton
 		0,
 		1
 	};
-	soundEnter[] =
-	{
-		"\A3\ui_f\data\sound\onover",
-		0.09,
-		1
-	};
-	soundPush[] =
-	{
-		"\A3\ui_f\data\sound\new1",
-		0,
-		0
-	};
-	soundClick[] =
-	{
-		"\A3\ui_f\data\sound\onclick",
-		0.07,
-		1
-	};
-	soundEscape[] =
-	{
-		"\A3\ui_f\data\sound\onescape",
-		0.09,
-		1
-	};
+	soundClick[] = {"\A3\ui_f\data\sound\RscButton\soundClick",0.09,1};
+	soundEnter[] = {"\A3\ui_f\data\sound\RscButton\soundEnter",0.09,1};
+	soundEscape[] = {"\A3\ui_f\data\sound\RscButton\soundEscape",0.09,1};
+	soundPush[] = {"\A3\ui_f\data\sound\RscButton\soundPush",0.09,1};
 	style = 2;
 	x = 0;
 	y = 0;
@@ -870,7 +855,47 @@ class IGUIBack
 		"(profilenamespace getvariable ['IGUI_BCG_RGB_A',0.8])"
 	};
 };
+
 class RscCheckbox
+{
+	idc = -1;
+	type = CT_CHECKBOX;
+	style = 0;
+	x = 0;
+	y = 0;
+	w = 0.05;
+	h = 0.05;
+
+	checked = 0;
+	color[] = {1,1,1,0.7};
+	colorBackground[] = {0,0,0,0};
+	colorBackgroundDisabled[] = {0,0,0,0};
+	colorBackgroundFocused[] = {0,0,0,0};
+	colorBackgroundHover[] = {0,0,0,0};
+	colorBackgroundPressed[] = {0,0,0,0};
+	colorDisabled[] = {1,1,1,0.25};
+	colorFocused[] = {1,1,1,1};
+	colorHover[] = {1,1,1,1};
+	colorPressed[] = {1,1,1,1};
+	font = "PuristaMedium";
+	soundClick[] = {"\A3\ui_f\data\sound\RscButton\soundClick",0.09,1};
+	soundEnter[] = {"\A3\ui_f\data\sound\RscButton\soundEnter",0.09,1};
+	soundEscape[] = {"\A3\ui_f\data\sound\RscButton\soundEscape",0.09,1};
+	soundPush[] = {"\A3\ui_f\data\sound\RscButton\soundPush",0.09,1};
+
+	textureChecked = "\a3\3DEN\Data\Controls\ctrlCheckbox\textureChecked_ca.paa";
+	textureDisabledChecked = "\a3\3DEN\Data\Controls\ctrlCheckbox\textureChecked_ca.paa";
+	textureDisabledUnchecked = "\a3\3DEN\Data\Controls\ctrlCheckbox\textureUnchecked_ca.paa";
+	textureFocusedChecked = "\a3\3DEN\Data\Controls\ctrlCheckbox\textureChecked_ca.paa";
+	textureFocusedUnchecked = "\a3\3DEN\Data\Controls\ctrlCheckbox\textureUnchecked_ca.paa";
+	textureHoverChecked = "\a3\3DEN\Data\Controls\ctrlCheckbox\textureChecked_ca.paa";
+	textureHoverUnchecked = "\a3\3DEN\Data\Controls\ctrlCheckbox\textureUnchecked_ca.paa";
+	texturePressedChecked = "\a3\3DEN\Data\Controls\ctrlCheckbox\textureChecked_ca.paa";
+	texturePressedUnchecked = "\a3\3DEN\Data\Controls\ctrlCheckbox\textureUnchecked_ca.paa";
+	textureUnchecked = "\a3\3DEN\Data\Controls\ctrlCheckbox\textureUnchecked_ca.paa";
+	tooltip = "";
+};
+class RscCheckboxes
 {
 	idc = -1;
 	type = 7;
@@ -1125,4 +1150,54 @@ class RscControlsGroup
 	h = 1;
 	shadow = 0;
 	style = 16;
+};
+
+class ScrollBar
+{
+    arrowEmpty = "#(argb,8,8,3)color(1,1,1,1)";
+    arrowFull = "#(argb,8,8,3)color(1,1,1,1)";
+    border = "#(argb,8,8,3)color(1,1,1,1)";
+    color[] = {1,1,1,0.6};
+    colorActive[] = {1,1,1,1};
+    colorDisabled[] = {1,1,1,0.3};
+    thumb = "#(argb,8,8,3)color(1,1,1,1)";
+};
+
+class RscControlsTable
+{
+    idc = -1;
+    x = 0;
+    y = 0;
+    w = 1;
+    h = 1;
+
+    type = CT_CONTROLS_TABLE;
+    style = SL_TEXTURES;
+     
+    lineSpacing = 0;
+    rowHeight = 1;
+    headerHeight = 1;
+     
+    firstIDC = 42000;
+    lastIDC = 44999;
+    
+    // Colours which are used for animation (i.e. change of colour) of the selected line.
+    selectedRowColorFrom[]  = {0.7, 0.85, 1, 0.25};
+    selectedRowColorTo[]    = {0.7, 0.85, 1, 0.5};
+    // Length of the animation cycle in seconds.
+    selectedRowAnimLength = 1.2;
+     
+    class VScrollBar: ScrollBar
+    {
+        width = 0.021;
+        autoScrollEnabled = 0;
+        autoScrollDelay = 1;
+        autoScrollRewind = 1;
+        autoScrollSpeed = 1;
+    };
+ 
+    class HScrollBar: ScrollBar
+    {
+        height = 0.028;
+    };
 };
